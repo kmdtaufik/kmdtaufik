@@ -40,28 +40,29 @@ Developer focused on pragmatic solutions across web stacks, developer tooling, a
 | Tooling | Git, Obsidian automation, Scaffolding, Repo hygiene |
 
 Badges:  
-![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=flat&logo=javascript) ![TypeScript](https://img.shields.io/badge/TypeScript-2f74c0?style=flat&logo=typescript&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-3C873A?style=flat&logo=nodedotjs) ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react) ![Nix](https://img.shields.io/badge/Nix-5277C3?style=flat&logo=nixos&logoColor=white) ![Shell](https://img.shields.io/badge/Shell-121011?style=flat&logo=gnu-bash) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-222?style=flat&logo=githubactions) ![Git](https://img.shields.io/badge/Git-F05033?style=flat&logo=git&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-000?style=flat&logo=linux) ![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat&logo=neovim&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=flat&logo=javascript&cacheSeconds=86400) ![TypeScript](https://img.shields.io/badge/TypeScript-2f74c0?style=flat&logo=typescript&logoColor=white&cacheSeconds=86400) ![Node.js](https://img.shields.io/badge/Node.js-3C873A?style=flat&logo=nodedotjs&cacheSeconds=86400) ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&cacheSeconds=86400) ![Nix](https://img.shields.io/badge/Nix-5277C3?style=flat&logo=nixos&logoColor=white&cacheSeconds=86400) ![Shell](https://img.shields.io/badge/Shell-121011?style=flat&logo=gnu-bash&cacheSeconds=86400) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-222?style=flat&logo=githubactions&cacheSeconds=86400) ![Git](https://img.shields.io/badge/Git-F05033?style=flat&logo=git&logoColor=white&cacheSeconds=86400) ![Linux](https://img.shields.io/badge/Linux-000?style=flat&logo=linux&cacheSeconds=86400) ![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat&logo=neovim&logoColor=white&cacheSeconds=86400)
 
 ---
 
 ### 📊 GitHub Stats
+<!-- Performance optimization: Images load with lazy loading for better initial page load -->
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=kmdtaufik&show_icons=true&theme=github_dark&hide_border=true&rank_icon=github" height="140" />
-  <img src="https://streak-stats.demolab.com?user=kmdtaufik&theme=github-dark&hide_border=true" height="140" />
+  <img src="https://github-readme-stats.vercel.app/api?username=kmdtaufik&show_icons=true&theme=github_dark&hide_border=true&rank_icon=github&cache_seconds=86400" alt="GitHub Stats" loading="lazy" height="140" />
+  <img src="https://streak-stats.demolab.com?user=kmdtaufik&theme=github-dark&hide_border=true" alt="GitHub Streak" loading="lazy" height="140" />
 </p>
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kmdtaufik&layout=compact&theme=github_dark&hide_border=true&langs_count=8" height="140" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kmdtaufik&layout=compact&theme=github_dark&hide_border=true&langs_count=8&cache_seconds=86400" alt="Top Languages" loading="lazy" height="140" />
 </p>
 <p align="center">
-  <img src="https://img.shields.io/github/followers/kmdtaufik?style=flat&label=Followers" />
-  <img src="https://img.shields.io/github/stars/kmdtaufik?style=flat&affiliations=OWNER&label=Stars" />
+  <img src="https://img.shields.io/github/followers/kmdtaufik?style=flat&label=Followers&cacheSeconds=3600" alt="Followers" loading="lazy" />
+  <img src="https://img.shields.io/github/stars/kmdtaufik?style=flat&affiliations=OWNER&label=Stars&cacheSeconds=3600" alt="Stars" loading="lazy" />
 </p>
 
 ---
 
 ### 🌐 Connect with Me
-[![GitHub](https://img.shields.io/badge/GitHub-kmdtaufik-181717?style=flat&logo=github)](https://github.com/kmdtaufik)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/khanmdtaufik/)
+[![GitHub](https://img.shields.io/badge/GitHub-kmdtaufik-181717?style=flat&logo=github&cacheSeconds=86400)](https://github.com/kmdtaufik)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat&logo=linkedin&cacheSeconds=86400)](https://www.linkedin.com/in/khanmdtaufik/)
 
 ---
 
