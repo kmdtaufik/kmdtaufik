@@ -3,6 +3,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import Header from '../components/Header'
+import { BackgroundAnimation } from '../components/BackgroundAnimation'
 
 import appCss from '../styles.css?url'
 
@@ -17,7 +18,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Md Taufik Khan - Full Stack Developer',
       },
     ],
     links: [
@@ -38,8 +39,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <BackgroundAnimation />
         <Header />
-        {children}
+        <main className="relative z-10">{children}</main>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
