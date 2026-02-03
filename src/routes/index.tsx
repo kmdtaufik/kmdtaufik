@@ -1,17 +1,17 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import {
-  Briefcase,
-  User,
-  FolderGit2,
-  Cpu,
-  ShieldCheck,
   ArrowRight,
+  Briefcase,
+  Code2,
+  Cpu,
+  FolderGit2,
   Github,
   Linkedin,
   Mail,
   MapPin,
-  Code2,
+  ShieldCheck,
+  User,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/')({ component: App })

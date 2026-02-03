@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { FolderGit2, ExternalLink, Github, ArrowRight } from 'lucide-react'
+import { ArrowRight, ExternalLink, FolderGit2, Github } from 'lucide-react'
 
 export const Route = createFileRoute('/projects')({ component: Projects })
 

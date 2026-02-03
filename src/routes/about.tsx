@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { User, MapPin, Mail, Github, Linkedin, Download } from 'lucide-react'
+import { Download, Github, Linkedin, Mail, MapPin, User } from 'lucide-react'
 
 export const Route = createFileRoute('/about')({ component: About })
 

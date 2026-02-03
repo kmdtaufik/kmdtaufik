@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { ShieldCheck, Lock } from 'lucide-react'
+import { Lock, ShieldCheck } from 'lucide-react'
 
 export const Route = createFileRoute('/login')({ component: Login })
 

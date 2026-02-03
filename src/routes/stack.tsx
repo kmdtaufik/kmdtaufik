@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { Code2, Database, Zap, Server, Boxes } from 'lucide-react'
+import { Boxes, Code2, Database, Server, Zap } from 'lucide-react'
 
 export const Route = createFileRoute('/stack')({ component: Stack })
 

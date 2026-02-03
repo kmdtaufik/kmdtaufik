@@ -1,18 +1,17 @@
 import { Link } from '@tanstack/react-router'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import {
+  Briefcase,
+  Code2,
+  FolderGit2,
   Home,
   Menu,
-  X,
-  FolderGit2,
-  User,
-  Briefcase,
-  Cpu,
-  Code2,
-  ShieldCheck,
   Moon,
+  ShieldCheck,
   Sun,
+  User,
+  X,
 } from 'lucide-react'
 
 export default function Header() {
@@ -21,7 +20,9 @@ export default function Header() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
     setTheme(initialTheme)
     document.documentElement.classList.toggle('dark', initialTheme === 'dark')
@@ -39,7 +40,6 @@ export default function Header() {
     { icon: FolderGit2, label: 'Projects', path: '/projects' },
     { icon: User, label: 'About', path: '/about' },
     { icon: Briefcase, label: 'Experience', path: '/experience' },
-    { icon: Cpu, label: 'Active Agents', path: '/agents' },
     { icon: Code2, label: 'Tech Stack', path: '/stack' },
     { icon: ShieldCheck, label: 'Admin', path: '/login' },
   ]
@@ -131,7 +131,9 @@ export default function Header() {
               className="fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-50 flex flex-col"
             >
               <div className="flex items-center justify-between p-6 border-b border-border">
-                <h2 className="text-xl font-bold text-foreground">Navigation</h2>
+                <h2 className="text-xl font-bold text-foreground">
+                  Navigation
+                </h2>
                 <motion.button
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
