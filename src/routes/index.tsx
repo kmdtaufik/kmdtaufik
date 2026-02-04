@@ -1,42 +1,59 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
   Briefcase,
   Code2,
-  Cpu,
   FolderGit2,
   Github,
   Linkedin,
   Mail,
-  MapPin,
-  ShieldCheck,
   User,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/')({ component: App })
 
+// Smooth spring config
+const spring = {
+  type: 'spring' as const,
+  stiffness: 100,
+  damping: 20,
+}
+
+const smoothEase = [0.22, 1, 0.36, 1] as const
+
 const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
+  hidden: { opacity: 0, y: 40 },
   visible: (custom: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: custom * 0.1,
+      delay: custom * 0.08,
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
+      ease: smoothEase,
     },
   }),
 }
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
+const staggerContainer = {
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    scale: 1,
     transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.06,
+      delayChildren: 0.2,
+    },
+  },
+}
+
+const letterAnimation = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: smoothEase,
     },
   },
 }
@@ -47,247 +64,253 @@ interface NavCardProps {
   icon: React.ReactNode
   href: string
   delay: number
+  size?: 'normal' | 'large'
 }
 
-function NavCard({ title, description, icon, href, delay }: NavCardProps) {
+function NavCard({ title, description, icon, href, delay, size = 'normal' }: NavCardProps) {
   return (
     <motion.div
       custom={delay}
       initial="hidden"
       animate="visible"
       variants={fadeInUp}
+      className={size === 'large' ? 'md:col-span-2' : ''}
     >
       <Link to={href}>
         <motion.div
-          whileHover={{ y: -8 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-          className="group relative p-8 rounded-3xl border border-border bg-card hover:bg-card/80 backdrop-blur-sm transition-all duration-300 h-full"
+          whileHover={{
+            y: -6,
+            transition: { duration: 0.3, ease: smoothEase }
+          }}
+          className="group h-full p-8 rounded-xl border border-border bg-card hover:border-accent hover:shadow-lg hover:shadow-accent/5 transition-all duration-500"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-          
-          <div className="relative">
-            <div className="inline-flex p-4 rounded-2xl bg-primary/10 mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="flex items-start justify-between mb-6">
+            <motion.div
+              className="p-3 rounded-lg bg-secondary text-foreground group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500"
+              whileHover={{ rotate: 5, scale: 1.05 }}
+              transition={spring}
+            >
               {icon}
-            </div>
-            
-            <h3 className="text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-              {title}
-            </h3>
-            
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              {description}
-            </p>
-            
-            <div className="flex items-center gap-2 text-primary font-semibold">
-              <span className="text-sm">View</span>
-              <motion.div
-                initial={{ x: 0 }}
-                whileHover={{ x: 4 }}
-              >
-                <ArrowRight className="w-4 h-4" />
-              </motion.div>
-            </div>
+            </motion.div>
+            <motion.div
+              initial={{ x: 0, opacity: 0.5 }}
+              whileHover={{ x: 4, opacity: 1 }}
+              className="text-muted-foreground group-hover:text-accent transition-colors duration-300"
+            >
+              <ArrowRight className="w-5 h-5" />
+            </motion.div>
           </div>
+
+          <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-accent transition-colors duration-300">
+            {title}
+          </h3>
+
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {description}
+          </p>
         </motion.div>
       </Link>
     </motion.div>
   )
 }
 
+// Animated text component
+function AnimatedText({ text, className }: { text: string; className?: string }) {
+  return (
+    <motion.span
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
+      className={className}
+      style={{ display: 'inline-block' }}
+    >
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          variants={letterAnimation}
+          style={{ display: 'inline-block' }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </motion.span>
+  )
+}
+
 function App() {
+  const { scrollYProgress } = useScroll()
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0.8])
+  const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.98])
+
   const navCards = [
     {
       title: 'Projects',
-      description: 'Explore my portfolio of full-stack applications and web platforms.',
-      icon: <FolderGit2 className="w-7 h-7 text-primary" />,
+      description: 'Featured work and applications showcasing modern web development.',
+      icon: <FolderGit2 className="w-5 h-5" />,
       href: '/projects',
+      size: 'large' as const,
     },
     {
       title: 'About',
-      description: 'Learn about my journey as a Full Stack Developer.',
-      icon: <User className="w-7 h-7 text-primary" />,
+      description: 'My journey as a developer.',
+      icon: <User className="w-5 h-5" />,
       href: '/about',
     },
     {
       title: 'Experience',
-      description: 'View my professional background and technical skills.',
-      icon: <Briefcase className="w-7 h-7 text-primary" />,
+      description: 'Skills & background.',
+      icon: <Briefcase className="w-5 h-5" />,
       href: '/experience',
     },
     {
-      title: 'Active Agents',
-      description: 'System daemons powering this platform.',
-      icon: <Cpu className="w-7 h-7 text-primary" />,
-      href: '/agents',
-    },
-    {
       title: 'Tech Stack',
-      description: 'Modern technologies and tools I work with.',
-      icon: <Code2 className="w-7 h-7 text-primary" />,
+      description: 'Modern tools and technologies I work with daily.',
+      icon: <Code2 className="w-5 h-5" />,
       href: '/stack',
-    },
-    {
-      title: 'Admin',
-      description: 'Secure dashboard with TOTP authentication.',
-      icon: <ShieldCheck className="w-7 h-7 text-primary" />,
-      href: '/login',
+      size: 'large' as const,
     },
   ]
 
   const socialLinks = [
-    {
-      icon: <Github className="w-5 h-5" />,
-      href: 'https://github.com/kmdtaufik',
-      label: 'GitHub',
-    },
-    {
-      icon: <Linkedin className="w-5 h-5" />,
-      href: 'https://www.linkedin.com/in/khanmdtaufik/',
-      label: 'LinkedIn',
-    },
-    {
-      icon: <Mail className="w-5 h-5" />,
-      href: 'mailto:khanmdtaufik@gmail.com',
-      label: 'Email',
-    },
+    { icon: Github, href: 'https://github.com/kmdtaufik', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/khanmdtaufik/', label: 'LinkedIn' },
+    { icon: Mail, href: 'mailto:info@khanmdtaufik.dev', label: 'Email' },
   ]
 
   return (
     <div className="min-h-screen">
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+      <div className="max-w-6xl mx-auto px-6 py-16">
         {/* Hero Section */}
-        <section className="mb-32 pt-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <motion.section
+          className="mb-24"
+          style={{ opacity: heroOpacity, scale: heroScale }}
+        >
+          <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-center">
+            {/* Text content */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="order-2 lg:order-1"
+              transition={{ duration: 1, ease: smoothEase }}
+              className="lg:col-span-3 order-2 lg:order-1"
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-block mb-6"
-              >
-                <div className="px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-primary" />
-                  <span className="text-primary text-sm font-semibold">
-                    Dhaka, Bangladesh
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-5xl md:text-7xl font-black text-foreground mb-6 leading-[1.1] tracking-tight"
-              >
-                Md Taufik Khan
-              </motion.h1>
-
+              {/* Tagline */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-xl md:text-2xl text-muted-foreground mb-8"
+                transition={{ delay: 0.3, duration: 0.6, ease: smoothEase }}
+                className="text-muted-foreground mb-6"
               >
-                Full Stack Developer crafting high-performance web applications
-                with modern technologies.
+                Full Stack Developer — Dhaka, Bangladesh
               </motion.p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
+              {/* Name with letter animation */}
+              <h1 className="heading-xl text-foreground mb-8">
+                <AnimatedText text="Md Taufik" />
+                <br />
+                <motion.span
+                  className="text-accent"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8, duration: 0.6, ease: smoothEase }}
+                >
+                  Khan
+                </motion.span>
+              </h1>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.8 }}
-                className="flex flex-wrap items-center gap-4"
+                transition={{ delay: 0.6, duration: 0.8, ease: smoothEase }}
+                className="text-lg text-muted-foreground max-w-lg mb-10 leading-relaxed"
               >
-                {socialLinks.map((link) => (
+                Building performant web applications with modern technologies.
+                Focused on clean architecture and exceptional user experiences.
+              </motion.p>
+
+              {/* Social links */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8, ease: smoothEase }}
+                className="flex items-center gap-3"
+              >
+                {socialLinks.map((link, index) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.9 + index * 0.1, duration: 0.4, ease: smoothEase }}
+                    whileHover={{
+                      y: -3,
+                      scale: 1.05,
+                      transition: { duration: 0.2 }
+                    }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 rounded-xl bg-secondary hover:bg-accent border border-border transition-all flex items-center gap-2 font-medium"
+                    className="p-3 rounded-lg border border-border hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-300"
                   >
-                    {link.icon}
-                    <span>{link.label}</span>
+                    <link.icon className="w-5 h-5" />
                   </motion.a>
                 ))}
               </motion.div>
             </motion.div>
 
+            {/* Avatar */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, x: 40 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="order-1 lg:order-2"
+              initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 0.4, duration: 1, ease: smoothEase }}
+              className="lg:col-span-2 order-1 lg:order-2"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl blur-3xl" />
-                <img
+              <div className="relative max-w-sm mx-auto lg:mx-0">
+                {/* Animated accent border */}
+                <motion.div
+                  className="absolute -inset-3 border border-accent/30 rounded-2xl"
+                  animate={{
+                    borderColor: ['rgba(180, 93, 72, 0.3)', 'rgba(180, 93, 72, 0.5)', 'rgba(180, 93, 72, 0.3)']
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <motion.img
                   src="/avatar.jpg"
                   alt="Md Taufik Khan"
-                  className="relative rounded-3xl shadow-2xl w-full max-w-md mx-auto border border-border"
+                  className="relative rounded-xl w-full"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: smoothEase }}
                 />
               </div>
             </motion.div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* Navigation Grid */}
+        {/* Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1.2, duration: 1, ease: smoothEase }}
+          className="h-px bg-border mb-16 origin-left"
+        />
+
+        {/* Navigation Grid - Bento style */}
         <section>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={scaleIn}
-            className="mb-12"
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3, duration: 0.6, ease: smoothEase }}
+            className="text-sm text-muted-foreground mb-8"
           >
-            <h2 className="text-4xl font-bold text-foreground mb-3">
-              Explore
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Navigate through my work and experience
-            </p>
-          </motion.div>
+            Explore
+          </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-4 gap-4">
             {navCards.map((card, index) => (
-              <NavCard key={card.title} {...card} delay={index + 3} />
+              <NavCard key={card.title} {...card} delay={index + 6} />
             ))}
           </div>
         </section>
-
-        {/* Tech Stack Preview */}
-        <motion.section
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="mt-32"
-        >
-          <div className="p-12 rounded-3xl border border-border bg-card/50 backdrop-blur-sm">
-            <h3 className="text-3xl font-bold text-foreground mb-6">
-              Tech Stack
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {['TanStack Start', 'Bun', 'Drizzle ORM', 'Hono', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Neon'].map((tech, index) => (
-                <motion.div
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.4 + index * 0.05, duration: 0.4 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-3 rounded-xl bg-secondary border border-border text-center font-medium text-foreground hover:bg-accent transition-colors cursor-default"
-                >
-                  {tech}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
       </div>
     </div>
   )

@@ -1,170 +1,113 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { Boxes, Code2, Database, Server, Zap } from 'lucide-react'
+import { Boxes, Database, Server, Code2, Zap } from 'lucide-react'
 
 export const Route = createFileRoute('/stack')({ component: Stack })
 
-const paperFoldVariants = {
-  hidden: { opacity: 0, rotateX: -90, transformOrigin: 'top', y: -20 },
-  visible: (custom: number) => ({
-    opacity: 1,
-    rotateX: 0,
-    y: 0,
-    transition: {
-      delay: custom * 0.12,
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  }),
-}
+const smoothEase = [0.22, 1, 0.36, 1] as const
 
 function Stack() {
-  const technologies = [
+  const categories = [
     {
-      category: 'Framework',
-      icon: <Boxes className="w-6 h-6 text-primary" />,
+      name: 'Framework',
+      icon: Boxes,
       items: [
-        {
-          name: 'TanStack Start',
-          description: 'Full-stack React framework with type-safe server functions',
-        },
-        {
-          name: 'TanStack Router',
-          description: 'File-based routing with advanced features',
-        },
+        { name: 'TanStack Start', description: 'Full-stack React framework' },
+        { name: 'TanStack Router', description: 'Type-safe routing' },
       ],
     },
     {
-      category: 'Runtime',
-      icon: <Zap className="w-6 h-6 text-primary" />,
+      name: 'Runtime',
+      icon: Zap,
       items: [
-        {
-          name: 'Bun',
-          description: 'Fast JavaScript runtime & package manager',
-        },
+        { name: 'Bun', description: 'Fast JavaScript runtime' },
       ],
     },
     {
-      category: 'Backend',
-      icon: <Server className="w-6 h-6 text-primary" />,
+      name: 'Backend',
+      icon: Server,
       items: [
-        {
-          name: 'Hono',
-          description: 'Lightweight web framework for API routes',
-        },
+        { name: 'Hono', description: 'Lightweight web framework' },
       ],
     },
     {
-      category: 'Database',
-      icon: <Database className="w-6 h-6 text-primary" />,
+      name: 'Database',
+      icon: Database,
       items: [
-        {
-          name: 'Drizzle ORM',
-          description: 'Type-safe SQL ORM for TypeScript',
-        },
-        {
-          name: 'Neon',
-          description: 'Serverless Postgres for scalable data storage',
-        },
+        { name: 'Drizzle ORM', description: 'Type-safe SQL ORM' },
+        { name: 'Neon', description: 'Serverless Postgres' },
       ],
     },
     {
-      category: 'UI & Styling',
-      icon: <Code2 className="w-6 h-6 text-primary" />,
+      name: 'UI & Styling',
+      icon: Code2,
       items: [
-        {
-          name: 'Tailwind CSS',
-          description: 'Utility-first CSS framework',
-        },
-        {
-          name: 'Framer Motion',
-          description: 'Animation library for React',
-        },
-        {
-          name: 'Shadcn/ui',
-          description: 'Beautifully designed components',
-        },
+        { name: 'Tailwind CSS', description: 'Utility-first CSS' },
+        { name: 'Framer Motion', description: 'Animation library' },
+        { name: 'shadcn/ui', description: 'Component library' },
       ],
     },
   ]
 
   return (
-    <div className="min-h-screen overflow-hidden">
-      <div className="relative z-10 px-6 py-20">
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-6xl mx-auto"
+          transition={{ duration: 0.6, ease: smoothEase }}
+          className="mb-16"
         >
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-sm mb-8"
-            >
-              <Code2 className="w-5 h-5 text-primary" />
-              <span className="text-primary text-sm font-semibold tracking-wide">
-                TECHNOLOGIES
-              </span>
-            </motion.div>
-            <motion.h1
+          <p className="text-sm text-muted-foreground mb-4">Technologies</p>
+          <h1 className="heading-lg text-foreground mb-4">
+            Tech Stack
+          </h1>
+          <p className="text-muted-foreground max-w-lg">
+            Modern, performance-first tools for building exceptional web experiences.
+          </p>
+        </motion.div>
+
+        {/* Categories */}
+        <div className="space-y-12">
+          {categories.map((category, catIndex) => (
+            <motion.section
+              key={category.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-5xl md:text-7xl font-black text-foreground mb-6"
+              transition={{
+                delay: 0.1 + catIndex * 0.1,
+                duration: 0.6,
+                ease: smoothEase
+              }}
             >
-              Tech Stack
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="text-xl text-muted-foreground"
-            >
-              Modern performance-first architecture
-            </motion.p>
-          </div>
+              {/* Category header */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 rounded-lg bg-secondary">
+                  <category.icon className="w-4 h-4 text-foreground" />
+                </div>
+                <h2 className="font-medium text-foreground">{category.name}</h2>
+              </div>
 
-          <div className="space-y-8">
-            {technologies.map((tech, index) => (
-              <motion.div
-                key={tech.category}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={paperFoldVariants}
-                className="p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm shadow-lg"
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-secondary">
-                    {tech.icon}
+              {/* Items grid - using CSS transitions only to avoid flash */}
+              <div className="grid sm:grid-cols-2 gap-3">
+                {category.items.map((item) => (
+                  <div
+                    key={item.name}
+                    className="p-5 rounded-lg border border-border bg-card hover:bg-secondary/30 hover:border-accent hover:-translate-y-0.5 transition-all duration-300 group cursor-default"
+                  >
+                    <h3 className="font-medium text-foreground mb-1 group-hover:text-accent transition-colors">
+                      {item.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {item.description}
+                    </p>
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">
-                    {tech.category}
-                  </h2>
-                </div>
-                <div className="space-y-4">
-                  {tech.items.map((item) => (
-                    <motion.div
-                      key={item.name}
-                      whileHover={{ scale: 1.01, x: 4 }}
-                      className="p-4 rounded-xl bg-secondary/50 border border-border"
-                    >
-                      <h3 className="text-lg font-semibold mb-1 text-primary">
-                        {item.name}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {item.description}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          ))}
+        </div>
       </div>
     </div>
   )
