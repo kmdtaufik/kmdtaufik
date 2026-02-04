@@ -1,31 +1,33 @@
 import { Link } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import {
-  Briefcase,
-  Code2,
-  FolderGit2,
-  Home,
-  Menu,
-  Moon,
-  ShieldCheck,
-  Sun,
-  User,
-  X,
-} from 'lucide-react'
+import { Moon, Sun, Menu, X } from 'lucide-react'
+
+const navItems = [
+  { label: 'Home', path: '/' },
+  { label: 'Projects', path: '/projects' },
+  { label: 'About', path: '/about' },
+  { label: 'Experience', path: '/experience' },
+  { label: 'Stack', path: '/stack' },
+]
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
     setTheme(initialTheme)
     document.documentElement.classList.toggle('dark', initialTheme === 'dark')
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const toggleTheme = () => {
@@ -35,82 +37,105 @@ export default function Header() {
     document.documentElement.classList.toggle('dark', newTheme === 'dark')
   }
 
-  const navItems = [
-    { icon: Home, label: 'Home', path: '/' },
-    { icon: FolderGit2, label: 'Projects', path: '/projects' },
-    { icon: User, label: 'About', path: '/about' },
-    { icon: Briefcase, label: 'Experience', path: '/experience' },
-    { icon: Code2, label: 'Tech Stack', path: '/stack' },
-    { icon: ShieldCheck, label: 'Admin', path: '/login' },
-  ]
-
   return (
     <>
       <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-        className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border shadow-lg"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          scrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : ''
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/">
-            <motion.h1
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-black logo-font bg-gradient-to-r from-primary via-cyan-500 to-primary bg-clip-text text-transparent tracking-wider"
-            >
-              KHANMDTAUFIK
-            </motion.h1>
-          </Link>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="group">
+              <motion.span
+                className="font-serif text-2xl font-medium text-foreground"
+                whileHover={{ x: 2 }}
+                transition={{ type: 'spring', stiffness: 400 }}
+              >
+                Taufik<span className="text-accent">.</span>
+              </motion.span>
+            </Link>
 
-          <div className="flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.05, rotate: 180 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleTheme}
-              className="p-2.5 rounded-lg bg-secondary hover:bg-accent transition-colors"
-              aria-label="Toggle theme"
-            >
-              <AnimatePresence mode="wait">
-                {theme === 'dark' ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Sun size={20} className="text-foreground" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Moon size={20} className="text-foreground" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors accent-underline"
+                  activeProps={{
+                    className: 'relative text-sm font-medium text-foreground accent-underline',
+                  }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(true)}
-              className="p-2.5 rounded-lg bg-secondary hover:bg-accent transition-colors"
-              aria-label="Open menu"
-            >
-              <Menu size={20} className="text-primary" />
-            </motion.button>
+            {/* Right side controls */}
+            <div className="flex items-center gap-4">
+              {/* Available badge */}
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                <span className="text-xs font-medium text-accent">Available</span>
+              </div>
+
+              {/* Theme toggle */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleTheme}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+                aria-label="Toggle theme"
+              >
+                <AnimatePresence mode="wait">
+                  {theme === 'dark' ? (
+                    <motion.div
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Sun size={18} className="text-foreground" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Moon size={18} className="text-foreground" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+
+              {/* Mobile menu button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsOpen(true)}
+                className="md:hidden p-2 rounded-lg hover:bg-secondary transition-colors"
+                aria-label="Open menu"
+              >
+                <Menu size={20} className="text-foreground" />
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.header>
 
-      <div className="h-[72px]" />
+      {/* Spacer */}
+      <div className="h-20" />
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -118,72 +143,50 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
               onClick={() => setIsOpen(false)}
             />
 
             <motion.aside
-              initial={{ x: 320, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 320, opacity: 0 }}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-50 flex flex-col"
+              className="fixed top-0 right-0 h-full w-72 bg-background border-l border-border z-50"
             >
               <div className="flex items-center justify-between p-6 border-b border-border">
-                <h2 className="text-xl font-bold text-foreground">
-                  Navigation
-                </h2>
+                <span className="font-serif text-lg">Menu</span>
                 <motion.button
-                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsOpen(false)}
                   className="p-2 rounded-lg hover:bg-secondary transition-colors"
-                  aria-label="Close menu"
                 >
-                  <X size={24} className="text-primary" />
+                  <X size={20} />
                 </motion.button>
               </div>
 
-              <nav className="flex-1 p-4 overflow-y-auto">
+              <nav className="p-6 space-y-2">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
-                    initial={{ x: 50, opacity: 0 }}
+                    initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                    transition={{ delay: index * 0.05 + 0.1 }}
                   >
                     <Link
                       to={item.path}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-all mb-2 group"
+                      className="block py-3 text-lg text-muted-foreground hover:text-accent transition-colors"
                       activeProps={{
-                        className:
-                          'flex items-center gap-3 p-3 rounded-lg bg-primary/10 border border-primary/50 transition-all mb-2 group',
+                        className: 'block py-3 text-lg text-accent',
                       }}
                     >
-                      <motion.div
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                        transition={{ type: 'spring', stiffness: 400 }}
-                      >
-                        <item.icon
-                          size={20}
-                          className="text-primary group-hover:text-primary"
-                        />
-                      </motion.div>
-                      <span className="font-medium text-foreground group-hover:text-primary transition-colors">
-                        {item.label}
-                      </span>
+                      {item.label}
                     </Link>
                   </motion.div>
                 ))}
               </nav>
-
-              <div className="p-4 border-t border-border">
-                <p className="text-xs text-muted-foreground text-center">
-                  Built with TanStack Start
-                </p>
-              </div>
             </motion.aside>
           </>
         )}
