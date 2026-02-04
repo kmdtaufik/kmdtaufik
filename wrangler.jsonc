@@ -3,7 +3,7 @@
   "compatibility_date": "2026-02-04",
   // "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "binding": "ASSETS",
+    // "binding": "ASSETS",
     "directory": "./dist",
   },
   "observability": {
