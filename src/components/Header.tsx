@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Moon, Sun, Menu, X } from 'lucide-react'
+import Logo from '@/logo.svg'
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -18,7 +19,9 @@ export default function Header() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light')
     setTheme(initialTheme)
     document.documentElement.classList.toggle('dark', initialTheme === 'dark')
@@ -44,7 +47,9 @@ export default function Header() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : ''
+          scrolled
+            ? 'bg-background/80 backdrop-blur-md border-b border-border'
+            : ''
         }`}
       >
         <div className="max-w-6xl mx-auto px-6">
@@ -56,7 +61,12 @@ export default function Header() {
                 whileHover={{ x: 2 }}
                 transition={{ type: 'spring', stiffness: 400 }}
               >
-                Taufik<span className="text-accent">.</span>
+                {/* Taufik<span className="text-accent">.</span> */}
+                <img
+                  src={Logo}
+                  alt="logo"
+                  className="w-16 h-16 not-dark:invert"
+                />
               </motion.span>
             </Link>
 
@@ -68,7 +78,8 @@ export default function Header() {
                   to={item.path}
                   className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors accent-underline"
                   activeProps={{
-                    className: 'relative text-sm font-medium text-foreground accent-underline',
+                    className:
+                      'relative text-sm font-medium text-foreground accent-underline',
                   }}
                 >
                   {item.label}
@@ -81,7 +92,9 @@ export default function Header() {
               {/* Available badge */}
               <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <span className="text-xs font-medium text-accent">Available</span>
+                <span className="text-xs font-medium text-accent">
+                  Available
+                </span>
               </div>
 
               {/* Theme toggle */}
