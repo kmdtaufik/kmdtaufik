@@ -1,7 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 
-export const Route = createFileRoute('/experience')({ component: Experience })
+export const Route = createFileRoute('/experience')({
+  component: Experience,
+  head: () => ({
+    meta: [
+      { title: 'Experience — Md Taufik Khan' },
+      {
+        name: 'description',
+        content:
+          'Professional experience and technical skills of Md Taufik Khan — TypeScript, React, TanStack, Node.js, Bun, PostgreSQL, and more.',
+      },
+    ],
+  }),
+})
 
 const smoothEase = [0.22, 1, 0.36, 1]
 
@@ -96,17 +108,19 @@ function Experience() {
                 transition={{
                   delay: 0.5 + index * 0.04,
                   duration: 0.5,
-                  ease: smoothEase
+                  ease: smoothEase,
                 }}
                 whileHover={{
                   y: -4,
                   borderColor: 'var(--accent)',
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.2 },
                 }}
                 className="p-4 rounded-lg border border-border bg-card hover:bg-secondary/50 hover:shadow-md transition-all duration-300 cursor-default"
               >
                 <p className="font-medium text-foreground mb-1">{skill.name}</p>
-                <p className="text-xs text-muted-foreground">{skill.category}</p>
+                <p className="text-xs text-muted-foreground">
+                  {skill.category}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -141,7 +155,11 @@ function Experience() {
                 key={job.role}
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2 + index * 0.15, duration: 0.7, ease: smoothEase }}
+                transition={{
+                  delay: 1.2 + index * 0.15,
+                  duration: 0.7,
+                  ease: smoothEase,
+                }}
                 className="relative pl-8 border-l-2 border-border hover:border-accent transition-colors duration-500"
               >
                 {/* Timeline dot with pulse effect */}
@@ -155,12 +173,14 @@ function Experience() {
                     duration: 2,
                     repeat: Infinity,
                     ease: 'easeInOut',
-                    delay: index * 0.5
+                    delay: index * 0.5,
                   }}
                 />
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
-                  <h3 className="font-serif text-xl text-foreground">{job.role}</h3>
+                  <h3 className="font-serif text-xl text-foreground">
+                    {job.role}
+                  </h3>
                   <motion.span
                     className="text-sm text-accent"
                     initial={{ opacity: 0 }}

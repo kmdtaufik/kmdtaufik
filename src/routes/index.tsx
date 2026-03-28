@@ -11,7 +11,19 @@ import {
   User,
 } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({
+  component: App,
+  head: () => ({
+    meta: [
+      { title: 'Md Taufik Khan — Full Stack Developer | Portfolio' },
+      {
+        name: 'description',
+        content:
+          'Portfolio of Md Taufik Khan, a Full Stack Developer from Dhaka, Bangladesh. Explore projects, tech stack, and experience in modern web development.',
+      },
+    ],
+  }),
+})
 
 // Smooth spring config
 const spring = {
@@ -276,7 +288,10 @@ function App() {
                 />
                 <motion.img
                   src="/avatar.jpg"
-                  alt="Md Taufik Khan"
+                  alt="Portrait of Md Taufik Khan, Full Stack Developer"
+                  width={400}
+                  height={400}
+                  fetchPriority="high"
                   className="relative rounded-xl w-full"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.4, ease: smoothEase }}

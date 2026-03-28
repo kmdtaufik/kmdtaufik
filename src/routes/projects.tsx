@@ -2,7 +2,19 @@ import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Github } from 'lucide-react'
 
-export const Route = createFileRoute('/projects')({ component: Projects })
+export const Route = createFileRoute('/projects')({
+  component: Projects,
+  head: () => ({
+    meta: [
+      { title: 'Projects — Md Taufik Khan' },
+      {
+        name: 'description',
+        content:
+          'Featured projects by Md Taufik Khan showcasing modern web development with Next.js, TanStack Start, TypeScript, and more.',
+      },
+    ],
+  }),
+})
 
 const smoothEase = [0.22, 1, 0.36, 1] as const
 
@@ -80,7 +92,10 @@ function Projects() {
               >
                 <motion.img
                   src={project.image}
-                  alt={project.title}
+                  alt={`${project.title} — ${project.description.slice(0, 60)}`}
+                  width={1200}
+                  height={675}
+                  loading="lazy"
                   className="w-full transition-transform duration-700"
                   whileHover={{ scale: 1.03 }}
                 />

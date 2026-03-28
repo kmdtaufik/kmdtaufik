@@ -2,7 +2,19 @@ import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { Download, Github, Linkedin, Mail, MapPin } from 'lucide-react'
 
-export const Route = createFileRoute('/about')({ component: About })
+export const Route = createFileRoute('/about')({
+  component: About,
+  head: () => ({
+    meta: [
+      { title: 'About — Md Taufik Khan' },
+      {
+        name: 'description',
+        content:
+          'Learn about Md Taufik Khan — a Full Stack Developer from Dhaka specializing in TanStack Start, Hono, Drizzle ORM, and modern TypeScript.',
+      },
+    ],
+  }),
+})
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -20,9 +32,21 @@ const fadeIn = {
 function About() {
   const contactLinks = [
     { icon: MapPin, text: 'Dhaka, Bangladesh', href: null },
-    { icon: Mail, text: 'info@khanmdtaufik.dev', href: 'mailto:info@khanmdtaufik.dev' },
-    { icon: Github, text: 'github.com/kmdtaufik', href: 'https://github.com/kmdtaufik' },
-    { icon: Linkedin, text: 'linkedin.com/in/khanmdtaufik', href: 'https://www.linkedin.com/in/khanmdtaufik/' },
+    {
+      icon: Mail,
+      text: 'info@khanmdtaufik.dev',
+      href: 'mailto:info@khanmdtaufik.dev',
+    },
+    {
+      icon: Github,
+      text: 'github.com/kmdtaufik',
+      href: 'https://github.com/kmdtaufik',
+    },
+    {
+      icon: Linkedin,
+      text: 'linkedin.com/in/khanmdtaufik',
+      href: 'https://www.linkedin.com/in/khanmdtaufik/',
+    },
   ]
 
   return (
@@ -36,9 +60,7 @@ function About() {
           className="mb-16"
         >
           <p className="text-sm text-muted-foreground mb-4">About</p>
-          <h1 className="heading-lg text-foreground">
-            A bit about me
-          </h1>
+          <h1 className="heading-lg text-foreground">A bit about me</h1>
         </motion.div>
 
         {/* Main Grid - Split layout */}
@@ -57,7 +79,10 @@ function About() {
                 <div className="absolute -top-4 -left-4 w-full h-full border border-accent/30 rounded-xl" />
                 <img
                   src="/avatar.jpg"
-                  alt="Md Taufik Khan"
+                  alt="Portrait of Md Taufik Khan, Full Stack Developer"
+                  width={400}
+                  height={400}
+                  loading="lazy"
                   className="relative rounded-xl w-full"
                 />
               </div>
@@ -87,13 +112,14 @@ function About() {
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  A passionate Full Stack Developer specializing in building modern,
-                  performant web applications. I focus on clean architecture,
-                  type-safe development, and cutting-edge technologies.
+                  A passionate Full Stack Developer specializing in building
+                  modern, performant web applications. I focus on clean
+                  architecture, type-safe development, and cutting-edge
+                  technologies.
                 </p>
                 <p>
-                  Currently working with TanStack Start, Bun, Drizzle ORM, and Hono
-                  to create next-generation web experiences. I believe in
+                  Currently working with TanStack Start, Bun, Drizzle ORM, and
+                  Hono to create next-generation web experiences. I believe in
                   performance-first development and building systems that scale.
                 </p>
               </div>
@@ -108,7 +134,8 @@ function About() {
               className="highlight-bar"
             >
               <p className="font-serif text-xl text-foreground italic">
-                "Building thoughtful digital experiences with attention to craft and detail."
+                "Building thoughtful digital experiences with attention to craft
+                and detail."
               </p>
             </motion.blockquote>
 
@@ -135,8 +162,14 @@ function About() {
                     <a
                       key={item.text}
                       href={item.href}
-                      target={item.href.startsWith('http') ? '_blank' : undefined}
-                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      target={
+                        item.href.startsWith('http') ? '_blank' : undefined
+                      }
+                      rel={
+                        item.href.startsWith('http')
+                          ? 'noopener noreferrer'
+                          : undefined
+                      }
                     >
                       {content}
                     </a>

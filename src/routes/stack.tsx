@@ -2,7 +2,19 @@ import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { Boxes, Database, Server, Code2, Zap } from 'lucide-react'
 
-export const Route = createFileRoute('/stack')({ component: Stack })
+export const Route = createFileRoute('/stack')({
+  component: Stack,
+  head: () => ({
+    meta: [
+      { title: 'Tech Stack — Md Taufik Khan' },
+      {
+        name: 'description',
+        content:
+          'The modern tech stack used by Md Taufik Khan — TanStack Start, Bun, Hono, Drizzle ORM, Neon, Tailwind CSS, Framer Motion, and shadcn/ui.',
+      },
+    ],
+  }),
+})
 
 const smoothEase = [0.22, 1, 0.36, 1] as const
 

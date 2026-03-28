@@ -64,7 +64,9 @@ export default function Header() {
                 {/* Taufik<span className="text-accent">.</span> */}
                 <img
                   src={Logo}
-                  alt="logo"
+                  alt="Md Taufik Khan — Home"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 not-dark:invert"
                 />
               </motion.span>
@@ -174,6 +176,7 @@ export default function Header() {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsOpen(false)}
                   className="p-2 rounded-lg hover:bg-secondary transition-colors"
+                  aria-label="Close menu"
                 >
                   <X size={20} />
                 </motion.button>
