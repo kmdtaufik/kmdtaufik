@@ -12,13 +12,15 @@
   }: let
     # 1. Define the specific system you are on
     system = "x86_64-linux";
-
-    # 2. Define 'pkgs' by explicitly grabbing the packages for that system
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
   in {
     devShells.${system} = {
       default = pkgs.mkShell {
         packages = with pkgs; [
+          antigravity-fhs
           bun
           nodejs
         ];
